@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Self Balancing Robot Control</string>
+
+    <string name="preference_values">com.example.origin.myapplication.VALUES</string>
+
+    <string name="action_left">Left</string>
+    <string name="action_right">Right</string>
+    <string name="action_forward">Forward</string>
+    <string name="action_backward">Backward</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_update_setpoint">Update Setpoint</string>
+    <string name="action_send_values">Send Values</string>
+
+
+    <string name="roll">Roll</string>
+    <string name="yaw">Yaw</string>
+    <string name="value">Value (deg)</string>
+    <string name="correction">Correction</string>
+    <string name="setpoint">Setpoint (deg)</string>
+
+    <string name="write_motor_speeds">Enable motors</string>
+    <string name="change_setpoint">Setpoint: %1$s (deg)</string>
+    <string name="motor_multiplier">Motor speed multiplier: %1$d%%</string>
+    <string name="movement_speed">Movement speed (deg): %1$d</string>
+    <string name="rotation_speed">Rotation speed (deg): %1$d</string>
+    <string name="k_p">Kp: %1$s</string>
+    <string name="k_i">Ki: %1$s</string>
+    <string name="k_d">Kd: %1$s</string>
+    <string name="status">Status</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+</resources>
