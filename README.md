@@ -14,7 +14,7 @@ In order to compile, you need to install the following libraries:
 
 ### at_commands
 
-Contains the at_commands application required for changins settings on the HC-05 Bluetooth module.
+Contains the at_commands application required for changing settings on the HC-05 Bluetooth module.
 
 ### plotter
 
