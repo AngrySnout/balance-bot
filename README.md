@@ -9,7 +9,6 @@ This repository contains the source code for my self-balancing robot final year 
 Contains the balancing source code for the Arduino Uno.  
 In order to compile, you need to install the following libraries:
 
-- [KalmanFilter](https://github.com/TKJElectronics/KalmanFilter)
 - [Adafruit-Motor-Shield-library](https://github.com/adafruit/Adafruit-Motor-Shield-library)
 
 ### at_commands
