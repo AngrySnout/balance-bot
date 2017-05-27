@@ -16,7 +16,6 @@ void setMotorSpeed(AF_DCMotor motor, int speed)
     {
         motor.setSpeed((uint8_t)speed);
         motor.run(direction);
-		Serial.println("Moving");
     }
     else
     {
@@ -35,6 +34,6 @@ void updateMotors(bool writeMotorSpeeds, int speed, double curAngle, double moto
     motor1Speed = -speed * motorSpeedMultiplier;
     motor2Speed = -speed * motorSpeedMultiplier;
     
-    if (writeMotorSpeeds && ((230 > curAngle && curAngle > 182) || (172 > curAngle && curAngle > 130))) setMotorSpeeds(motor1Speed, motor2Speed);
+    if (writeMotorSpeeds && ((230 > curAngle && curAngle > 181) || (179 > curAngle && curAngle > 130))) setMotorSpeeds(motor1Speed, motor2Speed);
     else setMotorSpeeds(0, 0);
 }
