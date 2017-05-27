@@ -63,10 +63,10 @@ void getInput()
                 rotationSpeed = (double) getByte() / 5.0;
                 break;
             case 'p':
-                balanceKp = (getByte() * 250.0) / 255.0;
+                balanceKp = (getByte() * 50.0) / 255.0;
                 break;
             case 'i':
-                balanceKi = (getByte() * 50.0) / 255.0;
+                balanceKi = (getByte() * 5.0) / 255.0;
                 break;
             case 'd':
                 balanceKd = (getByte() * 5.0) / 255.0;
