@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 
+# Use the following code on the Arduino to send values:
+'''
+	Serial.print("yaw: ");
+	Serial.print(gyroY);
+	Serial.print("\tpitch: ");
+	Serial.print(gyroZ);
+	Serial.print("\troll: ");
+	Serial.print(curAngle);
+	Serial.print("\tsetpoint: ");
+	Serial.print(setpoint);
+	Serial.print("\tforwardDir: ");
+	Serial.print(forwardDir);
+	Serial.print("\tMotor 1: ");
+	Serial.print(balanceKp);
+	Serial.print("\tMotor 2: ");
+	Serial.print(motor2Speed);
+	Serial.print("\n");
+'''
+
 import serial
 import re
 import numpy as np
