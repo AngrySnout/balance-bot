@@ -2,7 +2,6 @@
 #include <AFMotor.h>
 #include <Wire.h>
 
-#define OUTPUT_SERIAL_READABLE
 #define OUTPUT_BLUETOOTH_BINARY
 
 // Pins
@@ -86,7 +85,7 @@ void printDebug()
     extern SoftwareSerial bluetooth;
     extern int motor1Speed;
     extern int motor2Speed;
-    extern int16_t gyroX, gyroY, gyroZ;
+    extern int16_t gyroY;
     extern double setpoint;
     extern double ySetpoint;
 
@@ -112,24 +111,6 @@ void printDebug()
         bluetooth.write((int8_t)(rollSetpointN >> 8)); bluetooth.write((int8_t)(rollSetpointN & 0xFF));
         
         bluetooth.write('\n');
-        #endif
-        
-        #ifdef OUTPUT_SERIAL_READABLE
-        Serial.print("yaw: ");
-        Serial.print(gyroY);
-        Serial.print("\tpitch: ");
-        Serial.print(gyroZ);
-        Serial.print("\troll: ");
-        Serial.print(curAngle);
-        Serial.print("\tsetpoint: ");
-        Serial.print(setpoint);
-        Serial.print("\tforwardDir: ");
-        Serial.print(forwardDir);
-        Serial.print("\tMotor 1: ");
-        Serial.print(balanceKp);
-        Serial.print("\tMotor 2: ");
-        Serial.print(motor2Speed);
-        Serial.print("\n");
         #endif
 
         lastRun = millis();
