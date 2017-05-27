@@ -2,15 +2,12 @@ extern double balanceKp;
 extern double balanceKi;
 extern double balanceKd;
 
-Kalman kalman;
-
 int16_t accX, accY, accZ;
 int16_t tempRaw;
 int16_t gyroX, gyroY, gyroZ;
 
 double accXangle;
 double gyroXangle;
-double kalAngleX;
 
 unsigned long timer;
 uint8_t i2cData[14];
@@ -20,7 +17,6 @@ double setpoint = 5.0, originalSetpoint = 5.0;
 double ySetpoint = 0.0, yOriginalSetpoint = 0.0;
 
 double pTerm, iTerm, dTerm, integrated_error, last_error, error;
-const double K = 1.9*1.12;
 #define   GUARD_GAIN   10.0
 
 int speed;
@@ -41,7 +37,7 @@ void updateSetpoint(double forwardSpeed, double rotationSpeed)
     ySetpoint = constrain(ySetpoint + yOriginalSetpoint - rotationSpeed, -180, 180);
 }
 
-// The following lines until the end of the file were taken from
+// Most of the following lines until the end of the file were taken from
 // http://www.bajdi.com/building-a-self-balancing-bot/
 void setupMPU() {
     Wire.begin();
@@ -61,19 +57,19 @@ void setupMPU() {
 
     delay(100); // Wait for sensor to stabilize
 
-    /* Set kalman and gyro starting angle */
+    /* Set starting angle */
     while(i2cRead(0x3B,i2cData,6));
     accX = ((i2cData[0] << 8) | i2cData[1]);
     accY = ((i2cData[2] << 8) | i2cData[3]);
     accZ = ((i2cData[4] << 8) | i2cData[5]);
     accXangle = (atan2(accY,accZ)+PI)*RAD_TO_DEG;
 
-    kalman.setAngle(accXangle); // Set starting angle
+    curAngle = accXangle // Set starting angle
     gyroXangle = accXangle;
     timer = micros();
 }
 
-void updateMPU()
+void updateMPU(double k, double kP, double kI, double kD)
 {
     while(i2cRead(0x3B,i2cData,14));
     accX = ((i2cData[0] << 8) | i2cData[1]);
@@ -87,16 +83,18 @@ void updateMPU()
     accXangle += 180 - setpoint;
     if (accXangle >= 360) accXangle -= 360;
     double gyroXrate = (double)gyroX/131.0;
-    curAngle = kalman.getAngle(accXangle, gyroXrate, (double)(micros()-timer)/1000000);
+    const double A = 0.98;
+    curAngle = A * (curAngle + gyroXrate * (double)(micros()-timer)/1000000) + (1 - A) * accXangle;
     timer = micros();
     
     // PID
     error = 180 - curAngle;  // 180 = level
-    pTerm = balanceKp * error;
+    pTerm = kP * error;
     integrated_error += error;
-    iTerm = balanceKi * constrain(integrated_error, -GUARD_GAIN, GUARD_GAIN);
-    dTerm = balanceKd * (error - last_error);
+    iTerm = kI * constrain(integrated_error, -GUARD_GAIN, GUARD_GAIN);
+    dTerm = kD * (error - last_error);
     last_error = error;
-    speed = constrain(K*(pTerm + iTerm + dTerm), -255, 255);
+    speed = constrain(k*(pTerm + iTerm + dTerm), -255, 255);
+    //if (speed < 0) speed = map(speed, 0, -255, -15, -255);
+    //else speed = map(speed, 0, 255, 15, 255);
 }
-

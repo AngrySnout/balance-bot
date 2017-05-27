@@ -1,7 +1,6 @@
 #include <SoftwareSerial.h>
 #include <AFMotor.h>
 #include <Wire.h>
-#include <Kalman.h>
 
 #define OUTPUT_SERIAL_READABLE
 #define OUTPUT_BLUETOOTH_BINARY
@@ -15,11 +14,14 @@ const int motor2Num = 3;
 // Variables
 bool writeMotorSpeeds = true;
 double motorSpeedMultiplier = 0.4;
-double balanceKp = 50;
-double balanceKi = 1.65;
-double balanceKd = 3.57;
 double movementSpeed = 10.0;
 double rotationSpeed = 10.0;
+
+double balanceKp = 5;
+double balanceKi = 0.5;
+double balanceKd = 4;
+const double K = 10.0;
+const double gap = 5.0;
 
 // Constants
 // Rotation constants go unused for now
@@ -58,7 +60,16 @@ void loop()
     static long lastRun = 0;
     if ((uint16_t)((uint16_t)millis() - lastRun) > 25) {
         // Update MPU
-        updateMPU();
+        if (abs(curAngle - 180) > gap)
+        {
+          // Use aggressive tuning parameters
+          updateMPU(K, balanceKp, balanceKi, balanceKd);
+        }
+        else
+        {
+          // Use conservative tuning parameters
+          updateMPU(K*0.6, balanceKp, balanceKi*0.4, balanceKd*0.25);
+        }
 
         // Update motors
         updateMotors(writeMotorSpeeds, speed, curAngle, motorSpeedMultiplier);
@@ -115,7 +126,7 @@ void printDebug()
         Serial.print("\tforwardDir: ");
         Serial.print(forwardDir);
         Serial.print("\tMotor 1: ");
-        Serial.print(motor1Speed);
+        Serial.print(balanceKp);
         Serial.print("\tMotor 2: ");
         Serial.print(motor2Speed);
         Serial.print("\n");
